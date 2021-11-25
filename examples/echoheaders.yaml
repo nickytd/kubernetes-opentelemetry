@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "ca-issuer"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true" 
+    nginx.ingress.kubernetes.io/enable-opentracing: "true"    
+    jaeger-endpoint: "http://otel-collector-opentelemetry-collector.otel.svc.cluster.local:14268/api/traces"
+    #jaeger-collector-host: "otel-collector-opentelemetry-collector.otel.svc.cluster.local"
+    #jaeger-collector-port: "6831"
+  name: echoheaders
+spec:
+  rules:
+  - host: echoheaders.local.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: echoheaders
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - echoheaders.local.dev
+    secretName: echoheaders-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: echoheaders
+  name: echoheaders
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: echoheaders
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: echoheaders
+  name: echoheaders
+spec:
+  containers:
+  - image: k8s.gcr.io/echoserver:1.4
+    name: echoheaders
+    ports:
+    - containerPort: 8080

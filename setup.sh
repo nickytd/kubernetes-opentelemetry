@@ -24,10 +24,10 @@ echo "setting up opentelemetry-operator"
 kubectl create namespace opentelemetry-operator-system \
   --dry-run=client -o yaml | kubectl apply -f -
 
-kubectl apply -f issuer.yaml -n opentelemetry-operator-system \
+kubectl apply -f $dir/issuer.yaml -n opentelemetry-operator-system \
   --dry-run=client -o yaml | kubectl apply -f -
   
-kubectl apply -f cert.yaml -n opentelemetry-operator-system \
+kubectl apply -f $dir/cert.yaml -n opentelemetry-operator-system \
   --dry-run=client -o yaml | kubectl apply -f -
 
 helm upgrade otel-operator open-telemetry/opentelemetry-operator \

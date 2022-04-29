@@ -21,15 +21,6 @@ check_helm_chart "open-telemetry/opentelemetry-operator"
 
 echo "setting up opentelemetry-operator"
 
-kubectl create namespace opentelemetry-operator-system \
-  --dry-run=client -o yaml | kubectl apply -f -
-
-kubectl apply -f $dir/issuer.yaml -n opentelemetry-operator-system \
-  --dry-run=client -o yaml | kubectl apply -f -
-  
-kubectl apply -f $dir/cert.yaml -n opentelemetry-operator-system \
-  --dry-run=client -o yaml | kubectl apply -f -
-
 helm upgrade otel-operator open-telemetry/opentelemetry-operator \
-  -n opentelemetry-operator-system -f $dir/operator.yaml \
+  -n otel -f $dir/operator.yaml \
   --install --timeout 15m  

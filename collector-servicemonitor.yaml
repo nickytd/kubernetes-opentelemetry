@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: opentelemetry-collector
+  namespace: otel  
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: opentelemetry-collector-monitoring
+  endpoints:
+  - port: monitoring
+    path: /metrics

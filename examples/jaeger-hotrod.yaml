@@ -22,7 +22,7 @@ spec:
       logging:
         loglevel: info
       otlp:
-        endpoint: otel-collector-opentelemetry-collector.otel.svc.cluster.local:4317
+        endpoint: opentelemetry-collector.otel.svc.cluster.local:4317
         tls:
           insecure: true
 

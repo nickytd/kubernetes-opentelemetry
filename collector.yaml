@@ -13,7 +13,7 @@ config:
     otlp:
       endpoint: ofd-data-prepper.logging.svc.cluster.local:21890
       tls:
-        insecure-skip-verify: true
+        insecure_skip_verify: true
   service:
     pipelines:
       traces:

@@ -1,0 +1,29 @@
+extraVolumes:
+- name: certificate
+  secret:
+    secretName: ofd-ca
+extraVolumeMounts:
+- name: certificate
+  mountPath: /ssl/ca.crt
+  subPath: ca.crt
+
+mode: deployment
+config:
+  exporters:
+    logging:
+      loglevel: info
+    otlp:
+      endpoint: ofd-data-prepper.logging.svc.cluster.local:21890
+      tls:
+        ca_file: /ssl/ca.crt
+  service:
+    pipelines:
+      traces:
+        exporters:
+          - otlp
+
+ports:
+  metrics:
+    enabled: true
+serviceMonitor:
+  enabled: true

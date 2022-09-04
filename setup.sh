@@ -12,7 +12,7 @@ check_helm_chart "open-telemetry/opentelemetry-operator"
 
 echo "setting up opentelemetry-operator"
 
-kubectl get secrets -n logging ofd-opensearch-certificates -o json | jq '.data."tls.crt"' | sed 's/"//g' | base64 -D > $dir/ca.crt
+kubectl get secrets -n logging ofd-opensearch-certificates -o json | jq '.data."tls.crt"' | sed 's/"//g' | base64 -d > $dir/ca.crt
 kubectl create secret generic ofd-ca --from-file $dir/ca.crt -n otel \
   --dry-run=client -o yaml | kubectl apply -f -
 rm -f $dir/ca.crt
